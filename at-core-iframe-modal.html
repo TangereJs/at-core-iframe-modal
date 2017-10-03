@@ -1,0 +1,183 @@
+<link rel="import" href="../tangere/tangere.html" />
+<link rel="import" href="../at-core-spinner/at-core-spinner.html" />
+<link rel="import" href="../at-carbon-icon-button/at-carbon-icon-button.html" />
+
+<dom-module id="at-core-iframe-modal">
+  <template>
+    <style>
+      :host {
+        display: block;
+        box-sizing: border-box;
+      }
+
+      .modal-dialog {
+        width: calc(100vw - 100px);
+        height: calc(100vh - 100px);
+        margin: 0;
+        padding: 0;
+
+        background-color: white;
+
+        outline: none;
+        position: fixed;
+        top: 50px;
+        left: 50px;
+        box-sizing: border-box;
+        z-index: 103;
+      }
+
+      .modal-backdrop {
+        background-color: gray; 
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        outline: none;
+        position: fixed;
+        box-sizing: border-box;
+        z-index: 101;
+      }
+
+      .modal-frame {
+        width: 100%;
+        height: 100%;
+        border: none;
+        margin: 0;
+        padding: 0;
+
+        /* TODO(ij): remove */
+        border: 1px solid black;
+      }
+
+      .modal-spinner {
+        position: fixed;
+        left: 50%;
+        top: 50%;
+        z-index: 1000;
+        width: 60px;
+        height: 60px;
+        margin-left: -30px;
+        margin-top: -30px;
+        --paper-spinner-stroke-width: 4px;
+      }
+
+      .close-dialog {
+        width: 40px;
+        height: 40px;
+        position: absolute;
+        left: -16px;
+        top: -16px;
+        background: white;
+        border: 1px solid #ededed;
+        border-radius: 50%;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14),
+                  0 1px 5px 0 rgba(0, 0, 0, 0.12),
+                  0 3px 1px -2px rgba(0, 0, 0, 0.2);
+      }
+
+      @media (max-width: 500px) {
+        .modal-dialog {
+          position: absolute;
+          top: 70px;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          width: 100%;
+          height: calc(100vh - 70px);
+        }
+
+        .close-dialog {
+          left: calc(50% - 25px);
+          top: -60px;
+          width: 50px;
+          height: 50px;
+        }
+
+        .modal-frame {
+          margin-bottom: -4px; /* This seems to prevent the page from scrolling an extra 4px */
+        }
+      }
+
+    </style>
+    
+    <at-core-spinner id="coreSpinner" class="modal-spinner"></at-core-spinner>
+    
+    <div class="modal-backdrop">
+      
+    </div>
+    <div class="modal-dialog">
+      <at-carbon-icon-button id="closeDialog" class="close-dialog" icon="now:cancel" on-tap="close"></at-carbon-icon-button>
+      <iframe id="modalFrame" class="modal-frame" on-load="_handleFrameOnLoad"></iframe>
+    </div>
+
+<!--     <spinner-lite id="demo-spinner" active="[[_dialogDemoLoading]]"></spinner-lite>
+    <catalog-dialog unresolved id="demo-dialog" with-backdrop on-iron-overlay-canceled="_demoCanceled">
+      <div id="close-dialog" on-click="_cancelDemo">
+        <svg viewBox="0 0 100 100" class="octicon octicon-x">
+          <use xlink:href="/sprite.octicons.svg#x"></use>
+        </svg>
+      </div>
+      <iframe id="demo-frame" on-load="_demoLoaded" hidden="[[_dialogDemoLoading]]"></iframe>
+    </catalog-dialog> -->
+
+
+  </template>
+</dom-module>
+<script>
+  Polymer({
+    is: "at-core-iframe-modal",
+
+    hostAttributes: {
+      hidden: true
+    },
+
+    properties: {
+      url: {
+        type: String,
+        value: ''
+      }
+    },
+
+    ready: function () {
+
+    },
+
+    open: function() {
+      if (!this.url) return;
+
+      if (!this.hasAttribute('hidden')) return;
+
+      this.$.coreSpinner.display = 'block';
+
+      this.removeAttribute('hidden');
+
+      this.$.modalFrame.src = this.url;
+    },
+
+    close: function() {
+
+      this.setAttribute('hidden', true);
+
+      var frame = this.$.modalFrame;
+
+      if (frame.contentWindow.stop !== undefined) {
+        frame.contentWindow.stop();
+      } else {
+        frame.contentDocument.execCommand('Stop');
+      }
+
+      frame.src = "about:blank";
+    },
+    
+    _handleFrameOnLoad: function(event) {
+      this.$.coreSpinner.display = 'none';
+    }
+
+  });
+</script>
