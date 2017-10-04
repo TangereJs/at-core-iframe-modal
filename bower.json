@@ -1,0 +1,12 @@
+{
+  "name": "at-core-iframe-modal",
+  "version": "1.0.0.0",
+  "private": true,
+  "dependencies": {
+    "tangere": "TangereJs/tangere#master",
+    "at-core-spinner": "TangereJs/at-core-spinner#master",
+    "at-carbon-icon-button": "TangereJs/at-carbon-icon-button#master",
+    "at-theme": "TangereJs/at-theme#master",
+    "at-doc-viewer": "TangereJs/at-doc-viewer#master"
+  }
+}
