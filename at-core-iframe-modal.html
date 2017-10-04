@@ -44,9 +44,6 @@
         border: none;
         margin: 0;
         padding: 0;
-
-        /* TODO(ij): remove */
-        border: 1px solid black;
       }
 
       .modal-spinner {
@@ -115,18 +112,6 @@
       <at-carbon-icon-button id="closeDialog" class="close-dialog" icon="now:cancel" on-tap="close"></at-carbon-icon-button>
       <iframe id="modalFrame" class="modal-frame" on-load="_handleFrameOnLoad"></iframe>
     </div>
-
-<!--     <spinner-lite id="demo-spinner" active="[[_dialogDemoLoading]]"></spinner-lite>
-    <catalog-dialog unresolved id="demo-dialog" with-backdrop on-iron-overlay-canceled="_demoCanceled">
-      <div id="close-dialog" on-click="_cancelDemo">
-        <svg viewBox="0 0 100 100" class="octicon octicon-x">
-          <use xlink:href="/sprite.octicons.svg#x"></use>
-        </svg>
-      </div>
-      <iframe id="demo-frame" on-load="_demoLoaded" hidden="[[_dialogDemoLoading]]"></iframe>
-    </catalog-dialog> -->
-
-
   </template>
 </dom-module>
 <script>
